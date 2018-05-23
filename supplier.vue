@@ -301,6 +301,7 @@ export default {
     open() {
       this.ruleForm = {};
     },
+   // 页面点击第一级以后开始请求第二级别内容
     handleItemChange(val){
       var p_id;
       if(val.length == 1){
@@ -324,10 +325,7 @@ export default {
 
               this.options2[i].cities.push(cities);
             }
-
-            
-          }
-
+         }
           if(val.length == 2){
             for(var k in this.options2[i].cities){
               console.log(this.options2[i].cities[k]);
@@ -350,24 +348,19 @@ export default {
   },
   mounted() {
     this.$common.initData("getSupplierList", this.TableData);
+    //页面初始化的时候请求后台进行第一级数据加载
       this.$axios({
         method: "get",
         url: this.$api.getAreaList,
         params: {level:2,is_page:1}
       }).then(res => {
            var province={}
-        // console.log(res.data.data)
-        // // this.attribute = res.data.data;
         for(var i in res.data.data){
           var province={}
           province.label=res.data.data[i].area_name
           province.value=res.data.data[i].area_id
           province.cities=[]
           this.options2.push(province);
-        //   {
-        //   label: '江苏',
-        //   cities: []
-        // }
         }
         // this.options2.push(province);
         console.log(this.options2)
